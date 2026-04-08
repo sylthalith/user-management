@@ -4,17 +4,21 @@ namespace App;
 
 class Router
 {
-    private $routes = [];
-    public function addRoute($method, $uri, $handler) {
+    private array $routes = [];
+
+    public function addRoute(string $method, string $uri, callable|array $handler) {
         $this->routes[$method][$uri] = $handler;
     }
-    public function dispatch($method, $uri) {
-        $uri = parse_url($uri, PHP_URL_PATH);
+
+    public function dispatch(string $method, string $uri) {
+        $uri = parse_url($uri)['path'];
 
         $handler = $this->routes[$method][$uri] ?? null;
 
         if (!$handler) {
-            return http_response_code(404);
+            http_response_code(404);
+            echo '404';
+            die();
         }
 
         if (is_callable($handler)) {
