@@ -22,3 +22,14 @@ function config($conf) {
 function db() {
     return Database::get();
 }
+
+function redirect($path) {
+    header('Location: ' . ROOT . $path);
+}
+
+function dd($value) {
+    echo '<pre>';
+    var_dump($value);
+    echo '</pre>';
+    die();
+}

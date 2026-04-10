@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Validator;
+
 class RegisterController
 {
     public function create() {
@@ -9,12 +11,22 @@ class RegisterController
     }
 
     public function store() {
-        $name = $_POST['name'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $password1 = $_POST['password1'];
-        $password2 = $_POST['password2'];
+//        Validator::validate($_POST, [
+//            'name' => ['required', 'min:5', 'max:255'],
+//            'phone' => ['required', 'phone', 'unique:users'],
+//            'email' => ['required', 'email', 'unique:users', 'min:5', 'max:255'],
+//            'password' => ['required', 'min:8', 'max:255'],
+//        ]);
 
 
+        $errors = [];
+        if (empty($name)) {
+            $errors['name'] = "";
+        }
+
+        if ($password1 != $password2) {
+            $SESSION['errors']['password'] = 'Пароли не совпадают';
+//            redirect('/register');
+        }
     }
 }

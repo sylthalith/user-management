@@ -13,14 +13,17 @@
     <div class="input-block">
         <label for="name">Имя</label>
         <input id="name" type="text" name="name">
+        <span><?= $_SESSION['errors']['name'] ?? null ?></span>
     </div>
     <div class="input-block">
         <label for="phone">Телефон</label>
         <input id="phone" type="text" name="phone">
+        <span><?= $_SESSION['errors']['phone'] ?? null ?></span>
     </div>
     <div class="input-block">
         <label for="email">Почта</label>
         <input id="email" type="email" name="email">
+        <span><?= $_SESSION['errors']['email'] ?? null ?></span>
     </div>
     <div class="input-block">
         <label for="password1">Пароль</label>
@@ -29,6 +32,7 @@
     <div class="input-block">
         <label for="password2">Подтверждение пароля</label>
         <input id="password2" type="password" name="password2">
+        <span><?= $_SESSION['errors']['password'] ?? null ?></span>
     </div>
     <button type="submit">Отправить</button>
 </form>
