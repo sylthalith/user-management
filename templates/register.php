@@ -23,12 +23,12 @@
         <input id="email" type="email" name="email">
     </div>
     <div class="input-block">
-        <label for="password1">Пароль</label>
-        <input id="password1" type="password" name="password1">
+        <label for="password">Пароль</label>
+        <input id="password" type="password" name="password">
     </div>
     <div class="input-block">
-        <label for="password2">Подтверждение пароля</label>
-        <input id="password2" type="password" name="password2">
+        <label for="password_confirmation">Подтверждение пароля</label>
+        <input id="password_confirmation" type="password" name="password2">
     </div>
     <button type="submit">Отправить</button>
 </form>

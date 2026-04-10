@@ -10,6 +10,14 @@ class Router
         $this->routes[$method][$uri] = $handler;
     }
 
+    public function get(string $uri, callable|array $handler) {
+        $this->addRoute('GET', $uri, $handler);
+    }
+
+    public function post(string $uri, callable|array $handler) {
+        $this->addRoute('POST', $uri, $handler);
+    }
+
     public function dispatch(string $method, string $uri) {
         $uri = parse_url($uri)['path'];
 

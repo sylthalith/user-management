@@ -3,6 +3,8 @@
 use App\Database;
 use App\Router;
 
+session_start();
+
 require '../vendor/autoload.php';
 require '../config/helpers.php';
 

@@ -2,13 +2,10 @@
 
 use App\Controllers\RegisterController;
 
-$router->addRoute('GET', '/', function () {
-    $stmt = db()->prepare('SELECT * FROM `users`');
-    $stmt->execute();
-    $users = $stmt->fetchAll();
-    var_dump($users);
+$router->get('/', function () {
+    echo 'Hello World!';
 });
 
-$router->addRoute('GET', '/register', [RegisterController::class, 'create']);
+$router->get('/register', [RegisterController::class, 'create']);
 
-$router->addRoute('POST', '/register', [RegisterController::class, 'store']);
+$router->post('/register', [RegisterController::class, 'store']);

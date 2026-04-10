@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Rakit\Validation\Validator;
+
 class RegisterController
 {
     public function create() {
@@ -9,12 +11,17 @@ class RegisterController
     }
 
     public function store() {
-        $name = $_POST['name'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $password1 = $_POST['password1'];
-        $password2 = $_POST['password2'];
+        $validation = validate($_POST, [
+            'name' => 'required|min:5|max:50',
+            'phone' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|max:255',
+            'password_confirmation' => 'required|same:password'
+        ]);
 
-
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            dd($errors->firstOfAll());
+        }
     }
 }
