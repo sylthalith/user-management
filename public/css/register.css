@@ -5,3 +5,11 @@ label {
 .input-block {
     margin-bottom: 10px;
 }
+
+span {
+    display: block;
+}
+
+* {
+    border: 1px solid red;
+}

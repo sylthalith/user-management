@@ -35,6 +35,8 @@ class Router
 
         [$class, $method] = $handler;
 
-        return (new $class)->$method();
+        $controller = new $class();
+
+        return $controller->$method();
     }
 }

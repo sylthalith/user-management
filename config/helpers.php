@@ -25,7 +25,7 @@ function db() {
 }
 
 function redirect($path) {
-    header('Location: ' . ROOT . $path);
+    header('Location: ' . $path);
 }
 
 function dd($value) {
@@ -39,7 +39,14 @@ function validate($data, $rules) {
     $messages = require CONFIG . '/validation/messages.php';
     $aliases = require CONFIG . '/validation/aliases.php';
 
-    $validation = (new Validator)->make($data, $rules, $messages);
+    $validator = new Validator;
+
+    $customRules = require ROOT . '/src/Rules/rules.php';
+    foreach ($customRules as $rule => $class) {
+        $validator->addValidator($rule, new $class());
+    }
+
+    $validation = $validator->make($data, $rules, $messages);
     $validation->setAliases($aliases);
 
     $validation->validate();
