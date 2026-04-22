@@ -3,7 +3,7 @@
 use App\Controllers\RegisterController;
 
 $router->get('/', function () {
-    echo 'Hello World!';
+    echo $_SESSION['user_id'];
 });
 
 $router->get('/register', [RegisterController::class, 'create']);

@@ -6,5 +6,8 @@ return [
     'max' => ':attribute более :max символов',
     'email' => ':attribute имеет некорректный формат',
     'same' => 'Пароли не совпадают',
-    'phone' => ':attribute должен содержать 11 цифр'
+    'phone' => ':attribute должен содержать 11 цифр',
+    'phone:unique' => ':attribute с таким значением уже существует',
+    'email:unique' => ':attribute с таким значением уже существует',
+    'unique' => ':attribute с таким значением уже существует'
 ];
