@@ -9,15 +9,16 @@ define('STYLES', '/css');
 define('CONFIG', ROOT . '/config');
 
 function template(string $template, array $data = []) {
-    require TEMPLATES . '/' . $template . '.php';
+    extract($data);
+    require TEMPLATES . "/$template.php";
 }
 
-function style($style) {
-    return STYLES . '/' . $style . '.css';
+function style(string $style) {
+    return STYLES . "/$style.css";
 }
 
-function config($conf) {
-    return CONFIG . '/' . $conf . '.php';
+function config(string $conf) {
+    return CONFIG . "/$conf.php";
 }
 
 function db() {
@@ -25,7 +26,7 @@ function db() {
 }
 
 function redirect($path) {
-    header('Location: ' . $path);
+    header("Location: $path");
 }
 
 function dd($value) {
@@ -52,4 +53,9 @@ function validate($data, $rules) {
     $validation->validate();
 
     return $validation;
+}
+
+function partial($partial, $data = []) {
+    extract($data);
+    require TEMPLATES . "/partials/$partial.php";
 }
