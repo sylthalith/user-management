@@ -1,6 +1,6 @@
 <?php
 
-use App\Router;
+use App\Routing\Router;
 
 session_start();
 
