@@ -39,6 +39,6 @@ class RegisterController
         session_regenerate_id(true);
         $_SESSION['user_id'] = db()->lastInsertId();
 
-        redirect('/');
+        redirect('/dashboard');
     }
 }
