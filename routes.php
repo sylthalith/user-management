@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 
 $router->get('/', function () {
@@ -7,5 +8,7 @@ $router->get('/', function () {
 });
 
 $router->get('/register', [RegisterController::class, 'create']);
-
 $router->post('/register', [RegisterController::class, 'store']);
+
+$router->get('/login', [LoginController::class, 'create']);
+$router->post('/login', [LoginController::class, 'store']);

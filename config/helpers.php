@@ -10,6 +10,7 @@ define('CONFIG', ROOT . '/config');
 
 function template(string $template, array $data = []) {
     extract($data);
+
     require TEMPLATES . "/$template.php";
 }
 
@@ -42,7 +43,7 @@ function validate($data, $rules) {
 
     $validator = new Validator;
 
-    $customRules = require ROOT . '/src/Rules/rules.php';
+    $customRules = require ROOT . '/src/Validation/rules.php';
     foreach ($customRules as $rule => $class) {
         $validator->addValidator($rule, new $class());
     }

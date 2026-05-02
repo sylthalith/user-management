@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Rules;
+namespace App\Validation\Rules;
 
 use Rakit\Validation\Rule;
 
