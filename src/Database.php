@@ -19,7 +19,8 @@ class Database
     private static function connect() {
         $db = require config('db');
 
-        $pdo = new PDO("mysql:host={$db['host']};dbname={$db['database']};charset=utf8mb4", $db['user'], $db['password']);
+        $charset = $db['charset'] ?? 'utf8mb4';
+        $pdo = new PDO("mysql:host={$db['host']};dbname={$db['database']};charset=$charset", $db['user'], $db['password']);
 
         self::$pdo = $pdo;
     }
