@@ -1,5 +1,6 @@
 <?php partial('header', ['style' => style('auth')]) ?>
     <form action="/login" method="POST">
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
         <div class="input-block">
             <label for="email">Почта</label>
             <input id="email" type="email" name="email">

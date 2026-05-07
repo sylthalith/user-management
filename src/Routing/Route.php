@@ -2,6 +2,8 @@
 
 namespace App\Routing;
 
+use App\Security\CsrfToken;
+
 class Route
 {
     private string $method;
@@ -90,6 +92,18 @@ class Route
         foreach ($this->middlewares as $middlewareClass) {
             $middleware = new $middlewareClass();
             $middleware->handle();
+        }
+    }
+
+    public function checkCsrfToken() {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            return;
+        }
+
+        $csrfHandler = new CsrfToken();
+
+        if (!$csrfHandler->verify()) {
+            die('Invalid CSRF token');
         }
     }
 }

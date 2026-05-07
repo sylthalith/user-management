@@ -50,6 +50,7 @@ class Router
         }
 
         $route->checkMiddlewares();
+        $route->checkCsrfToken();
 
         $handler = $route->getHandler();
         $parameters = $route->getParameters();

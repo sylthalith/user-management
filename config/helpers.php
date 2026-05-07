@@ -2,6 +2,7 @@
 
 use App\Database;
 use Rakit\Validation\Validator;
+use App\Security\CsrfToken;
 
 define('ROOT', dirname(__DIR__));
 define('TEMPLATES', ROOT . '/templates');
@@ -59,4 +60,8 @@ function validate($data, $rules) {
 function partial($partial, $data = []) {
     extract($data);
     require TEMPLATES . "/partials/$partial.php";
+}
+
+function csrf_token() {
+    return (new CsrfToken())->get();
 }
