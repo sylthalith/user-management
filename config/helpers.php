@@ -1,6 +1,7 @@
 <?php
 
 use App\Database;
+use App\Middlewares\CsrfMiddleware;
 use Rakit\Validation\Validator;
 use App\Security\CsrfToken;
 

@@ -8,7 +8,8 @@ class AuthMiddleware extends Middleware
         return isset($_SESSION['user_id']);
     }
 
-    protected function redirectUrl(): string {
-        return '/login';
+    protected function fail(): void
+    {
+        redirect('/login');
     }
 }

@@ -50,7 +50,6 @@ class Router
         }
 
         $route->checkMiddlewares();
-        $route->checkCsrfToken();
 
         $handler = $route->getHandler();
         $parameters = $route->getParameters();
@@ -72,7 +71,8 @@ class Router
         }
 
         if (is_string($middlewares)) {
-            $middlewares = [$middlewares];
+            $this->lastRoute->addMiddleware($middlewares);
+            return;
         }
 
         foreach ($middlewares as $middleware) {

@@ -94,16 +94,4 @@ class Route
             $middleware->handle();
         }
     }
-
-    public function checkCsrfToken() {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return;
-        }
-
-        $csrfHandler = new CsrfToken();
-
-        if (!$csrfHandler->verify()) {
-            die('Invalid CSRF token');
-        }
-    }
 }

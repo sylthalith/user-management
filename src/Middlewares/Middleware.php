@@ -4,14 +4,15 @@ namespace App\Middlewares;
 
 abstract class Middleware
 {
-    public function handle() {
+    public function handle(): void
+    {
         if (!$this->condition()) {
-            redirect($this->redirectUrl());
-            exit;
+            $this->fail();
+            exit();
         }
     }
 
     abstract protected function condition(): bool;
 
-    abstract protected function redirectUrl(): string;
+    abstract protected function fail(): void;
 }

@@ -8,7 +8,8 @@ class GuestMiddleware extends Middleware
         return !isset($_SESSION['user_id']);
     }
 
-    protected function redirectUrl(): string {
-        return '/dashboard';
+    protected function fail(): void
+    {
+        redirect('/dashboard');
     }
 }

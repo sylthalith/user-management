@@ -37,10 +37,17 @@ class CsrfToken
 
     public function verify() : bool
     {
-        if (!$this->getSessionToken() || !$this->getRequestToken()) {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            return true;
+        }
+
+        $sessionToken = $this->getSessionToken();
+        $requestToken = $this->getRequestToken();
+
+        if (!$sessionToken || !$requestToken) {
             return false;
         }
 
-        return $this->getSessionToken() === $this->getRequestToken();
+        return hash_equals($requestToken, $sessionToken);
     }
 }
