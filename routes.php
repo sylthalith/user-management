@@ -29,6 +29,6 @@ $router->post('/login', [LoginController::class, 'store'])
 $router->get('/logout', [LoginController::class, 'destroy'])
        ->middleware(AuthMiddleware::class);
 
-$router->get('#/user/[0-9]+/post/[a-z]+#', function ($var1, $var2) {
-    var_dump($var1, $var2);
+$router->get('/user/{id}/post/{slug}', function ($id, $slug) {
+    var_dump($id, $slug);
 });

@@ -6,7 +6,6 @@ class Router
 {
     private array $routes = [];
     private ?Route $lastRoute = null;
-
     private function addRoute(string $method, string $uri, callable|array $handler): Router
     {
         $route = new Route($method, $uri, $handler);
@@ -39,7 +38,7 @@ class Router
 
     public function dispatch(string $method, string $uri)
     {
-        $uri = parse_url($uri)['path'];
+        $uri = trim(parse_url($uri)['path'], '/');
 
         $route = $this->getRoute($method, $uri);
 

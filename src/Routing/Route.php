@@ -11,10 +11,15 @@ class Route
     private $handler;
     private array $middlewares = [];
     private array $parameters = [];
+    private static array $defaultPatterns = [
+        'id'   => '[0-9]+',
+        'slug' => '[a-z0-9]+(?:-[a-z0-9]+)*',
+        'default' => '[a-z0-9]+',
+    ];
 
     public function __construct(string $method, string $uri, callable|array $handler, array $middlewares = []) {
         $this->method = $method;
-        $this->uri = $uri;
+        $this->uri = trim($uri, '/');
         $this->handler = $handler;
         $this->middlewares = $middlewares;
     }
@@ -29,9 +34,8 @@ class Route
             return true;
         }
 
-        if ($this->isUriRegex() && preg_match($this->uri, $uri)) {
-            $parameters = $this->getParametersFromUri($uri);
-            $this->parameters = $parameters;
+        if ($this->isUriParameterized() && $this->match($uri)) {
+            $this->parameters = $this->getParametersFromUri($uri);
 
             return true;
         }
@@ -39,37 +43,67 @@ class Route
         return false;
     }
 
-    private function getParametersFromUri($uri): array
+    private function match($uri): bool
     {
-        $uriWithoutDelimeters = substr($this->uri, 1, -1);
-        $separated = explode('/', $uriWithoutDelimeters);
-        $separated = array_values(array_filter($separated));
-
-        $parametersPositions = [];
-
-        for ($i = 0; $i < count($separated); $i++) {
-            if (!ctype_alnum($separated[$i])) {
-                $parametersPositions[] = $i;
-            }
-        }
-
-        $separated = explode('/', $uri);
-        $separated = array_values(array_filter($separated));
-
-        $parameters = [];
-
-        for ($i = 0; $i < count($separated); $i++) {
-            if (in_array($i, $parametersPositions)) {
-                $parameters[] = $separated[$i];
-            }
-        }
-
-        return $parameters;
+        return preg_match($this->createPattern(), $uri);
     }
 
-    private function isUriRegex(): bool
+    private function isUriParameterized(): bool
     {
-        return @preg_match($this->uri, '') !== false;
+        return str_contains($this->uri, '{') && str_contains($this->uri, '}');
+    }
+
+    private function getParametersFromUri($uri): array
+    {
+        $routerParams = $this->parseParameters();
+        $requestParams = [];
+
+        preg_match($this->createPattern(), $uri, $matches);
+
+        foreach ($routerParams as $param) {
+            $requestParams[$param] = $matches[$param];
+        }
+
+        return $requestParams;
+    }
+
+    private function parseParameters(): array
+    {
+        $params = [];
+
+        $splitted = explode('/', $this->uri);
+
+        for ($i = 0; $i < count($splitted); $i++) {
+            $part = $splitted[$i];
+            if (preg_match('#{(?P<param>[a-z]+)}#', $part, $matches)) {
+                $params[$i] = $matches['param'];
+            }
+        }
+
+        return $params;
+    }
+
+    private function createPattern(): string
+    {
+        $splitted = explode('/', $this->uri);
+
+        $params = $this->parseParameters();
+
+        $pattern = [];
+
+        for ($i = 0; $i < count($splitted); $i++) {
+            if (array_key_exists($i, $params)) {
+                $subPattern = "(?P<$params[$i]>" . (self::$defaultPatterns[$params[$i]] ?? self::$defaultPatterns['default']) . ")";
+            } else {
+                $subPattern = $splitted[$i];
+            }
+
+            $pattern[] = $subPattern;
+        }
+
+        $pattern = implode('/', $pattern);
+
+        return '#^' . $pattern . '$#';
     }
 
     public function getParameters(): array
