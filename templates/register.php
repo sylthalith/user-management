@@ -1,5 +1,6 @@
 <?php partial('header', ['style' => style('auth')]) ?>
 <form action="/register" method="POST">
+    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
     <div class="input-block">
         <label for="name">Имя</label>
         <input id="name" type="text" name="name">

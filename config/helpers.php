@@ -7,7 +7,7 @@ use App\Security\CsrfToken;
 
 define('ROOT', dirname(__DIR__));
 define('TEMPLATES', ROOT . '/templates');
-define('STYLES', '/css');
+define('STYLES_URL', '/css');
 define('CONFIG', ROOT . '/config');
 define('VALIDATION', ROOT . '/src/Validation');
 
@@ -18,7 +18,7 @@ function template(string $template, array $data = []) {
 }
 
 function style(string $style) {
-    return STYLES . "/$style.css";
+    return STYLES_URL . "/$style.css";
 }
 
 function config(string $conf) {
@@ -31,6 +31,7 @@ function db() {
 
 function redirect($path) {
     header("Location: $path");
+    exit();
 }
 
 function dd($value) {
