@@ -9,6 +9,7 @@ define('ROOT', dirname(__DIR__));
 define('TEMPLATES', ROOT . '/templates');
 define('STYLES', '/css');
 define('CONFIG', ROOT . '/config');
+define('VALIDATION', ROOT . '/src/Validation');
 
 function template(string $template, array $data = []) {
     extract($data);
@@ -37,25 +38,6 @@ function dd($value) {
     var_dump($value);
     echo '</pre>';
     die();
-}
-
-function validate($data, $rules) {
-    $messages = require CONFIG . '/validation/messages.php';
-    $aliases = require CONFIG . '/validation/aliases.php';
-
-    $validator = new Validator;
-
-    $customRules = require ROOT . '/src/Validation/rules.php';
-    foreach ($customRules as $rule => $class) {
-        $validator->addValidator($rule, new $class());
-    }
-
-    $validation = $validator->make($data, $rules, $messages);
-    $validation->setAliases($aliases);
-
-    $validation->validate();
-
-    return $validation;
 }
 
 function partial($partial, $data = []) {

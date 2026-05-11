@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Request;
+
 class LoginController
 {
     public function create() {
@@ -9,13 +11,13 @@ class LoginController
     }
 
     public function store() {
-        $validation = validate($_POST, [
+        $validation = Request::validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if ($validation->fails()) {
-            $errors = $validation->errors()->toArray();
+        if (!$validation) {
+            $errors = Request::validationErrors();
             template('login', ['errors' => $errors]);
             return;
         }

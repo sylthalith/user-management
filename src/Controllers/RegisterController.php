@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Request;
+
 class RegisterController
 {
     public function create() {
@@ -9,7 +11,7 @@ class RegisterController
     }
 
     public function store() {
-        $validation = validate($_POST, [
+        $validation = Request::validate([
             'name' => 'required|min:5|max:50|unique:users,name',
             'phone' => 'required|phone|unique:users,phone',
             'email' => 'required|email|unique:users,email',
@@ -17,8 +19,8 @@ class RegisterController
             'password_confirmation' => 'required|same:password'
         ]);
 
-        if ($validation->fails()) {
-            $errors = $validation->errors()->toArray();
+        if (!$validation) {
+            $errors = Request::validationErrors();
             template('register', ['errors' => $errors]);
             return;
         }
