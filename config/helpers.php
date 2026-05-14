@@ -8,6 +8,7 @@ use App\Security\CsrfToken;
 define('ROOT', dirname(__DIR__));
 define('TEMPLATES', ROOT . '/templates');
 define('STYLES_URL', '/css');
+define('SCRIPTS_URL', '/js');
 define('CONFIG', ROOT . '/config');
 define('VALIDATION', ROOT . '/src/Validation');
 
@@ -19,6 +20,10 @@ function template(string $template, array $data = []) {
 
 function style(string $style) {
     return STYLES_URL . "/$style.css";
+}
+
+function script(string $script) {
+    return SCRIPTS_URL . "/$script.js";
 }
 
 function config(string $conf) {
@@ -41,11 +46,10 @@ function dd($value) {
     die();
 }
 
-function partial($partial, $data = []) {
-    extract($data);
-    require TEMPLATES . "/partials/$partial.php";
-}
-
 function csrf_token() {
     return (new CsrfToken())->get();
+}
+
+function wrap_array($value) {
+    return !is_array($value) ? [$value] : $value;
 }

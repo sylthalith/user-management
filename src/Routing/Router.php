@@ -2,6 +2,8 @@
 
 namespace App\Routing;
 
+use App\Request;
+
 class Router
 {
     private array $routes = [];
@@ -44,7 +46,14 @@ class Router
 
         if (!$route) {
             http_response_code(404);
-            echo '404';
+
+            if (Request::isAjax()) {
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(['error' => '404 Not found']);
+            } else {
+                template('errors/404');
+            }
+
             die();
         }
 

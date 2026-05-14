@@ -13,12 +13,24 @@ class CsrfToken
 
     private function getRequestToken(): ?string
     {
-        return $_POST[$this->storageKey] ?? null;
+        if (isset($_POST[$this->storageKey])) {
+            return $_POST[$this->storageKey];
+        }
+
+        if (isset($_SERVER['HTTP_X_CSRF_TOKEN'])) {
+            return $_SERVER['HTTP_X_CSRF_TOKEN'];
+        }
+
+        return null;
     }
 
     private function getSessionToken(): ?string
     {
-        return $_SESSION[$this->storageKey] ?? null;
+        if (isset($_SESSION[$this->storageKey])) {
+            return $_SESSION[$this->storageKey];
+        }
+
+        return null;
     }
 
     private function setSessionToken(string $token): void

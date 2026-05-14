@@ -18,24 +18,18 @@ class LoginController
 
         if (!$validation) {
             $errors = Request::validationErrors();
-            template('login', ['errors' => $errors]);
+            template('login', ['errors' => $errors, 'email' => $_POST['email']]);
             return;
         }
 
-        $stmt = db()->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt = db()->prepare('SELECT id, password FROM users WHERE email = :email');
         $stmt->execute(['email' => $_POST['email']]);
 
         $user = $stmt->fetch();
 
-        if (!$user) {
-            $errors = ['email' => 'Пользователя с такой почтой не существует'];
-            template('login', ['errors' => $errors]);
-            return;
-        };
-
-        if (!password_verify($_POST['password'], $user['password'])) {
-            $errors = ['password' => 'Неверный пароль'];
-            template('login', ['errors' => $errors]);
+        if (!$user || !password_verify($_POST['password'], $user['password'])) {
+            $errors = ['password' => 'Неверные данные пользователя'];
+            template('login', ['errors' => $errors, 'email' => $_POST['email']]);
             return;
         }
 
