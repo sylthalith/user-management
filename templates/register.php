@@ -3,21 +3,21 @@
     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
     <div class="input-block">
         <label for="name">Имя</label>
-        <input id="name" type="text" name="name" value="<?= htmlspecialchars($name ?? '', ENT_QUOTES, 'UTF-8') ?>">
+        <input id="name" type="text" name="name" value="<?= h($name ?? '') ?>">
         <?php if (isset($errors['name'])) : ?>
             <?php template('partials/errors', ['errors' => $errors['name']]) ?>
         <?php endif ?>
     </div>
     <div class="input-block">
         <label for="phone">Телефон</label>
-        <input id="phone" type="text" name="phone" value="<?= htmlspecialchars($phone ?? '', ENT_QUOTES, 'UTF-8') ?>">
+        <input id="phone" type="text" name="phone" value="<?= h($phone ?? '') ?>">
         <?php if (isset($errors['phone'])) : ?>
             <?php template('partials/errors', ['errors' => $errors['phone']]) ?>
         <?php endif ?>
     </div>
     <div class="input-block">
         <label for="email">Почта</label>
-        <input id="email" type="email" name="email" value="<?= htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8') ?>">
+        <input id="email" type="email" name="email" value="<?= h($email ?? '') ?>">
         <?php if (isset($errors['email'])) : ?>
             <?php template('partials/errors', ['errors' => $errors['email']]) ?>
         <?php endif ?>

@@ -53,3 +53,7 @@ function csrf_token() {
 function wrap_array($value) {
     return !is_array($value) ? [$value] : $value;
 }
+
+function h(string $str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
