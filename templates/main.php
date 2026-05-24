@@ -1,3 +1,6 @@
-<?php template('partials/header', ['title' => 'Главная страница']) ?>
-Главная страница
-<?php template('partials/footer', ['scripts' => script('main')]) ?>
+<?php
+
+template('partials/header', ['styles' => style('main')]);
+template('partials/navbar');
+
+template('partials/footer');
