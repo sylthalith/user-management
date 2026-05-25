@@ -4,7 +4,10 @@
     --white: #fff;
     --gray: #888;
     --dark-gray: #777;
+    --red: #d16b6b;
+    --dark-red: #7a2d2d;
     --border: 1px solid #222;
+    --error-border: 1px solid var(--dark-red);
 }
 
 * {
@@ -38,6 +41,7 @@ a {
     align-items: center;
     padding-block: 10px;
     padding-inline: 20px;
+    min-height: 50px;
 }
 
 .nav {

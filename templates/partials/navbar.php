@@ -13,20 +13,22 @@
                 </li>
             <?php else: ?>
                 <li class="nav-links-item">
-                    <a class="nav-link" href="#">Вход</a>
+                    <a class="nav-link" href="/login">Вход</a>
                 </li>
                 <li class="nav-links-item">
-                    <a class="nav-link" href="#">Регистрация</a>
+                    <a class="nav-link" href="/register">Регистрация</a>
                 </li>
             <?php endif ?>
         </ul>
         <div class="nav-item user">
-            <div class="role">
-                Пользователь
-            </div>
-<!--                <a class="avatar" href="#">-->
-<!--                    <img src="image.png" alt="" class="avatar-image">-->
-<!--                </a>-->
+            <?php if (isAuth()): ?>
+                <div class="role">
+                    Пользователь
+                </div>
+    <!--                <a class="avatar" href="#">-->
+    <!--                    <img src="image.png" alt="" class="avatar-image">-->
+    <!--                </a>-->
+            <?php endif ?>
         </div>
     </div>
 </header>

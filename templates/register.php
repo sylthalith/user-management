@@ -1,41 +1,19 @@
-<?php template('partials/header', ['styles' => [style('auth')]]) ?>
-<form action="/register" method="POST">
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-    <div class="input-block">
-        <label for="name">Имя</label>
-        <input id="name" type="text" name="name" value="<?= h($name ?? '') ?>">
-        <?php if (isset($errors['name'])) : ?>
-            <?php template('partials/errors', ['errors' => $errors['name']]) ?>
-        <?php endif ?>
-    </div>
-    <div class="input-block">
-        <label for="phone">Телефон</label>
-        <input id="phone" type="text" name="phone" value="<?= h($phone ?? '') ?>">
-        <?php if (isset($errors['phone'])) : ?>
-            <?php template('partials/errors', ['errors' => $errors['phone']]) ?>
-        <?php endif ?>
-    </div>
-    <div class="input-block">
-        <label for="email">Почта</label>
-        <input id="email" type="email" name="email" value="<?= h($email ?? '') ?>">
-        <?php if (isset($errors['email'])) : ?>
-            <?php template('partials/errors', ['errors' => $errors['email']]) ?>
-        <?php endif ?>
-    </div>
-    <div class="input-block">
-        <label for="password">Пароль</label>
-        <input id="password" type="password" name="password">
-        <?php if (isset($errors['password'])) : ?>
-            <?php template('partials/errors', ['errors' => $errors['password']]) ?>
-        <?php endif ?>
-    </div>
-    <div class="input-block">
-        <label for="password_confirmation">Подтверждение пароля</label>
-        <input id="password_confirmation" type="password" name="password_confirmation">
-        <?php if (isset($errors['password_confirmation'])) : ?>
-            <?php template('partials/errors', ['errors' => $errors['password_confirmation']]) ?>
-        <?php endif ?>
-    </div>
-    <button type="submit">Отправить</button>
-</form>
-<?php template('partials/footer') ?>
+<?php
+partial('header', ['styles' => styles(['main', 'input'])]);
+partial('navbar');
+?>
+<div class="input">
+    <h1 class="input-header">Регистрация</h1>
+    <form class="form" action="/register" method="POST">
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+        <?php
+            partial('input-block', ['name' => 'name', 'label' => 'Имя', 'value' => h($name ?? ''), 'errors' => $errors['name'] ?? []]);
+            partial('input-block', ['name' => 'phone', 'label' => 'Телефон', 'value' => h($phone ?? ''), 'errors' => $errors['phone'] ?? []]);
+            partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($email ?? ''), 'type' => 'email', 'errors' => $errors['email'] ?? []]);
+            partial('input-block', ['name' => 'password', 'label' => 'Пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
+            partial('input-block', ['name' => 'password_confirmation', 'label' => 'Подтверждение пароля', 'type' => 'password', 'errors' => $errors['password_confirmation'] ?? []]);
+        ?>
+        <button class="submit-btn" type="submit">Отправить</button>
+    </form>
+</div>
+<?php partial('footer') ?>

@@ -18,12 +18,24 @@ function template(string $template, array $data = []) {
     require TEMPLATES . "/$template.php";
 }
 
-function style(string $style) {
-    return STYLES_URL . "/$style.css";
+function partial(string $partial, array $data = []) {
+    template("partials/$partial", $data);
 }
 
-function script(string $script) {
-    return SCRIPTS_URL . "/$script.js";
+function getFilesPaths(array|string $files, string $folderPath, string $extension) {
+    $paths = [];
+    foreach (wrap_array($files) as $file) {
+        $paths[] = $folderPath . "/$file.$extension";
+    }
+    return $paths;
+}
+
+function styles(array|string $styles) {
+    return getFilesPaths($styles, STYLES_URL, 'css');
+}
+
+function scripts(array|string $scripts) {
+    return getFilesPaths($scripts, SCRIPTS_URL, 'js');
 }
 
 function config(string $conf) {
@@ -54,7 +66,7 @@ function wrap_array($value) {
     return !is_array($value) ? [$value] : $value;
 }
 
-function h(string $str) {
+function h(string $str): string {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 

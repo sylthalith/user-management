@@ -1,6 +1,9 @@
 <?php
+partial('header', ['styles' => styles('main')]);
+partial('navbar');
+?>
 
-template('partials/header', ['styles' => style('main')]);
-template('partials/navbar');
+Главная страница
 
-template('partials/footer');
+<?php
+partial('footer');
