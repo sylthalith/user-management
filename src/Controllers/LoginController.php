@@ -33,6 +33,21 @@ class LoginController
             return;
         }
 
+        if (isset($_POST['remember_me'])) {
+            $rememberToken = bin2hex(random_bytes(32));
+            $expiresAt = strtotime('+30 days');
+
+            setcookie('remember_token', $rememberToken, $expiresAt);
+
+            $stmt = db()->prepare('INSERT INTO remember_tokens (user_id, token, expires_at) 
+                                   VALUES (:user_id, :token, :expires_at)');
+            $stmt->execute([
+                'user_id' => $user['id'],
+                'token' => $rememberToken,
+                'expires_at' => date("Y-m-d H:i:s", $expiresAt)
+            ]);
+        }
+
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
 
@@ -49,6 +64,15 @@ class LoginController
                 $params["secure"], $params["httponly"]
             );
         }
+
+        if (isset($_COOKIE['remember_token'])) {
+            $rememberToken = $_COOKIE['remember_token'];
+
+            $stmt = db()->prepare('DELETE FROM remember_tokens WHERE token = :token');
+            $stmt->execute(['token' => $rememberToken]);
+        }
+
+        setcookie('remember_token', '', time() - 3600, '/');
 
         session_destroy();
 

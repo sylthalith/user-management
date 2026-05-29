@@ -2,10 +2,12 @@
 
 namespace App\Middlewares;
 
+use App\Security\Auth;
+
 class GuestMiddleware extends Middleware
 {
     protected function condition(): bool {
-        return !isset($_SESSION['user_id']);
+        return !Auth::check();
     }
 
     protected function fail(): void
