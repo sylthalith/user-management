@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Repositories\RememberTokenRepository;
+use App\Repositories\UserRepository;
 use App\Request;
 
 class LoginController
@@ -22,10 +24,7 @@ class LoginController
             return;
         }
 
-        $stmt = db()->prepare('SELECT id, password FROM users WHERE email = :email');
-        $stmt->execute(['email' => $_POST['email']]);
-
-        $user = $stmt->fetch();
+        $user = UserRepository::findByEmail($_POST['email']);
 
         if (!$user || !password_verify($_POST['password'], $user['password'])) {
             $errors = ['password' => 'Неверные данные пользователя'];
@@ -37,15 +36,18 @@ class LoginController
             $rememberToken = bin2hex(random_bytes(32));
             $expiresAt = strtotime('+30 days');
 
-            setcookie('remember_token', $rememberToken, $expiresAt);
-
-            $stmt = db()->prepare('INSERT INTO remember_tokens (user_id, token, expires_at) 
-                                   VALUES (:user_id, :token, :expires_at)');
-            $stmt->execute([
-                'user_id' => $user['id'],
-                'token' => $rememberToken,
-                'expires_at' => date("Y-m-d H:i:s", $expiresAt)
+            setcookie('remember_token', $rememberToken, [
+                'expires' => $expiresAt,
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Strict'
             ]);
+
+            RememberTokenRepository::create(
+                $user['id'],
+                $rememberToken,
+                date("Y-m-d H:i:s", $expiresAt)
+            );
         }
 
         session_regenerate_id(true);
@@ -68,8 +70,7 @@ class LoginController
         if (isset($_COOKIE['remember_token'])) {
             $rememberToken = $_COOKIE['remember_token'];
 
-            $stmt = db()->prepare('DELETE FROM remember_tokens WHERE token = :token');
-            $stmt->execute(['token' => $rememberToken]);
+            RememberTokenRepository::deleteByToken($rememberToken);
         }
 
         setcookie('remember_token', '', time() - 3600, '/');

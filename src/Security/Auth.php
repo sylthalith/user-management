@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use PDO;
+use App\Repositories\RememberTokenRepository;
 
 class Auth
 {
@@ -18,9 +18,7 @@ class Auth
 
         $rememberToken = $_COOKIE['remember_token'];
 
-        $stmt = db()->prepare('SELECT user_id, token, expires_at FROM remember_tokens WHERE token = :token LIMIT 1');
-        $stmt->execute(['token' => $rememberToken]);
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = RememberTokenRepository::findByToken($rememberToken);
 
         if (!$data) {
             return false;
