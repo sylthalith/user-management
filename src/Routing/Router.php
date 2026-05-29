@@ -38,6 +38,21 @@ class Router
         return $this->addRoute('POST', $uri, $handler);
     }
 
+    public function put(string $uri, callable|array $handler): Router
+    {
+        return $this->addRoute('PUT', $uri, $handler);
+    }
+
+    public function patch(string $uri, callable|array $handler): Router
+    {
+        return $this->addRoute('PATCH', $uri, $handler);
+    }
+
+    public function delete(string $uri, callable|array $handler): Router
+    {
+        return $this->addRoute('DELETE', $uri, $handler);
+    }
+
     public function dispatch(string $method, string $uri)
     {
         $uri = trim(parse_url($uri)['path'], '/');
