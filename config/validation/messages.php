@@ -10,5 +10,6 @@ return [
     'phone:unique' => ':attribute с таким значением уже существует',
     'phone:required' => ':attribute отсутствует',
     'email:unique' => ':attribute с таким значением уже существует',
+    'email:required' => ':attribute отсутствует',
     'unique' => ':attribute с таким значением уже существует'
 ];

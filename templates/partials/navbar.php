@@ -1,4 +1,4 @@
-<header class="header">
+<header class="window header">
     <div class="logo">
         User management
     </div>

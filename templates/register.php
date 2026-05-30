@@ -2,7 +2,7 @@
 partial('header', ['styles' => styles(['main', 'input'])]);
 partial('navbar');
 ?>
-<div class="input">
+<div class="window input">
     <h1 class="input-header">Регистрация</h1>
     <form class="form" action="/register" method="POST">
         <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
@@ -13,7 +13,7 @@ partial('navbar');
             partial('input-block', ['name' => 'password', 'label' => 'Пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
             partial('input-block', ['name' => 'password_confirmation', 'label' => 'Подтверждение пароля', 'type' => 'password', 'errors' => $errors['password_confirmation'] ?? []]);
         ?>
-        <button class="submit-btn" type="submit">Отправить</button>
+        <button class="btn submit-btn white-btn" type="submit">Отправить</button>
     </form>
 </div>
 <?php partial('footer') ?>

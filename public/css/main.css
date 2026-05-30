@@ -33,9 +33,33 @@ a {
     color: inherit;
 }
 
+.btn {
+    padding: 12px;
+    cursor: pointer;
+}
+
+.white-btn {
+    border: none;
+    background: var(--white);
+    color: var(--background-color);
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.dark-btn {
+    border: var(--border);
+    background: var(--accent-color);
+}
+
+.window {
+    border: var(--border);
+    background-color: var(--accent-color);
+}
+
 .header {
     width: 100%;
-    background-color: var(--accent-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
