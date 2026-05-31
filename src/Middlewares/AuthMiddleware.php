@@ -3,7 +3,6 @@
 namespace App\Middlewares;
 
 use App\Security\Auth;
-use PDO;
 
 class AuthMiddleware extends Middleware
 {

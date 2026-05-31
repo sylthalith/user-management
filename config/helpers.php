@@ -2,6 +2,8 @@
 
 use App\Database;
 use App\Middlewares\CsrfMiddleware;
+use App\Request;
+use App\Security\Auth;
 use Rakit\Validation\Validator;
 use App\Security\CsrfToken;
 
@@ -70,6 +72,19 @@ function h(string $str): string {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
-function isAuth() {
-    return isset($_SESSION['user_id']);
+function isAuth(): bool {
+    return Auth::check();
+}
+
+function abort($code, $message) {
+    http_response_code($code);
+
+    if (Request::isAjax()) {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => $message]);
+    } else {
+        template('error', ['code' => $code, 'message' => $message]);
+    }
+
+    die();
 }

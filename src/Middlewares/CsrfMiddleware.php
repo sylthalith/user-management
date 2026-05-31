@@ -20,7 +20,6 @@ class CsrfMiddleware extends Middleware
 
     protected function fail(): void
     {
-        header('HTTP/1.0 403 Forbidden');
-        echo 'Forbidden';
+        abort(403, 'Доступ запрещен');
     }
 }

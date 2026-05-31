@@ -60,16 +60,7 @@ class Router
         $route = $this->getRoute($method, $uri);
 
         if (!$route) {
-            http_response_code(404);
-
-            if (Request::isAjax()) {
-                header('Content-Type: application/json; charset=utf-8');
-                echo json_encode(['error' => '404 Not found']);
-            } else {
-                template('errors/404');
-            }
-
-            die();
+            abort(404, 'Страница не найдена');
         }
 
         $route->checkMiddlewares();
