@@ -12,6 +12,6 @@ class GuestMiddleware extends Middleware
 
     protected function fail(): void
     {
-        redirect('/dashboard');
+        redirect('/profile');
     }
 }

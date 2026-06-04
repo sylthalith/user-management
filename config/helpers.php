@@ -26,7 +26,7 @@ function partial(string $partial, array $data = []) {
 
 function getFilesPaths(array|string $files, string $folderPath, string $extension) {
     $paths = [];
-    foreach (wrap_array($files) as $file) {
+    foreach (wrapArray($files) as $file) {
         $paths[] = $folderPath . "/$file.$extension";
     }
     return $paths;
@@ -60,11 +60,12 @@ function dd($value) {
     die();
 }
 
-function csrf_token() {
-    return (new CsrfToken())->get();
+function csrfToken(): string {
+    $token = (new CsrfToken())->get();
+    return "<input type='hidden' name='csrf_token' value='$token'>";
 }
 
-function wrap_array($value) {
+function wrapArray($value) {
     return !is_array($value) ? [$value] : $value;
 }
 

@@ -84,12 +84,7 @@ class Router
             return;
         }
 
-        if (is_string($middlewares)) {
-            $this->lastRoute->addMiddleware($middlewares);
-            return;
-        }
-
-        foreach ($middlewares as $middleware) {
+        foreach (wrapArray($middlewares) as $middleware) {
             $this->lastRoute->addMiddleware($middleware);
         }
     }
