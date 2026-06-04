@@ -2,29 +2,25 @@
 
 namespace App\Repositories;
 
-class UserRepository
+class UserRepository extends Repository
 {
-    public static function create(string $name, string $phone, string $email, string $password): int
+    protected static string $table = 'users';
+
+    public static function findById(int $id): ?array
     {
-        $stmt = db()->prepare(
-            'INSERT INTO users (name, phone, email, password) VALUES (:name, :phone, :email, :password)'
-        );
-
-        $stmt->execute([
-            'name' => $name,
-            'phone' => $phone,
-            'email' => $email,
-            'password' => $password
-        ]);
-
-        return (int) db()->lastInsertId();
+        return parent::findByFields(['id' => $id], 1);
     }
 
     public static function findByEmail(string $email): ?array
     {
-        $stmt = db()->prepare('SELECT * FROM users WHERE email = :email');
-        $stmt->execute(['email' => $email]);
+        return parent::findByFields(['email' => $email], 1);
+    }
 
-        return $stmt->fetch() ?: null;
+    public static function updateById(int $id, array $data): void
+    {
+        parent::updateByFields(
+            ['id' => $id],
+            $data
+        );
     }
 }

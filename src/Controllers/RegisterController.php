@@ -35,16 +35,16 @@ class RegisterController
 
         $phone = preg_replace('/[^0-9]/', '', $_POST['phone']);
 
-        $userId = UserRepository::create(
-            $_POST['name'],
-            $phone,
-            $_POST['email'],
-            password_hash($_POST['password'], PASSWORD_DEFAULT)
-        );
+        $userId = UserRepository::create([
+            'name' => $_POST['name'],
+            'phone' => $phone,
+            'email' => $_POST['email'],
+            'password' => password_hash($_POST['password'], PASSWORD_DEFAULT)
+        ]);
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = $userId;
 
-        redirect('/dashboard');
+        redirect('/profile');
     }
 }

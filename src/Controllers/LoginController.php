@@ -43,17 +43,17 @@ class LoginController
                 'samesite' => 'Strict'
             ]);
 
-            RememberTokenRepository::create(
-                $user['id'],
-                $rememberToken,
-                date("Y-m-d H:i:s", $expiresAt)
-            );
+            RememberTokenRepository::create([
+                'id' => $user['id'],
+                'token' => $rememberToken,
+                'expires_at' => date("Y-m-d H:i:s", $expiresAt)
+            ]);
         }
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
 
-        redirect('/dashboard');
+        redirect('/profile');
     }
 
     public function destroy() {
