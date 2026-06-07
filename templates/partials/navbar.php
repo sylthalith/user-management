@@ -6,12 +6,12 @@
         <ul class="nav-item nav-links">
             <?php if (isAuth()): ?>
                 <li class="nav-links-item">
-                    <a class="nav-link" href="#">Главная</a>
-                </li>
-                <li class="nav-links-item">
-                    <a class="nav-link" href="#">Профиль</a>
+                    <a class="nav-link" href="/logout">Выйти</a>
                 </li>
             <?php else: ?>
+                <li class="nav-links-item">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
                 <li class="nav-links-item">
                     <a class="nav-link" href="/login">Вход</a>
                 </li>
@@ -25,9 +25,9 @@
                 <div class="role">
                     Пользователь
                 </div>
-    <!--                <a class="avatar" href="#">-->
-    <!--                    <img src="image.png" alt="" class="avatar-image">-->
-    <!--                </a>-->
+                <a class="avatar" href="/profile">
+                    <img src="" alt="" class="avatar-image">
+                </a>
             <?php endif ?>
         </div>
     </div>

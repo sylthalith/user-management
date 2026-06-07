@@ -12,7 +12,7 @@
             value="<?= isset($value) ? h($value) : '' ?>"
         >
         <?php if (isset($errors)): ?>
-            <?php foreach(wrap_array($errors) as $error): ?>
+            <?php foreach(wrapArray($errors) as $error): ?>
                 <div class="error-text"><?= h($error) ?></div>
             <?php endforeach; ?>
         <?php endif; ?>

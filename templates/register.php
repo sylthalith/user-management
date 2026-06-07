@@ -1,11 +1,11 @@
 <?php
-partial('header', ['styles' => styles(['main', 'input'])]);
+partial('header', ['styles' => styles('input')]);
 partial('navbar');
 ?>
 <div class="window input">
     <h1 class="input-header">Регистрация</h1>
     <form class="form" action="/register" method="POST">
-        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+        <?= csrfToken() ?>
         <?php
             partial('input-block', ['name' => 'name', 'label' => 'Имя', 'value' => h($name ?? ''), 'errors' => $errors['name'] ?? []]);
             partial('input-block', ['name' => 'phone', 'label' => 'Телефон', 'value' => h($phone ?? ''), 'errors' => $errors['phone'] ?? []]);

@@ -12,8 +12,10 @@ $router = new Router();
 
 require '../routes.php';
 
-try {
-    $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-} catch (Throwable $e) {
-    abort(500, 'Ошибка на сервере');
-}
+$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+
+//try {
+//    $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+//} catch (Throwable $e) {
+//    abort(500, 'Ошибка на сервере');
+//}

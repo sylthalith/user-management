@@ -44,7 +44,7 @@ class LoginController
             ]);
 
             RememberTokenRepository::create([
-                'id' => $user['id'],
+                'user_id' => $user['id'],
                 'token' => $rememberToken,
                 'expires_at' => date("Y-m-d H:i:s", $expiresAt)
             ]);

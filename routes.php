@@ -1,11 +1,12 @@
 <?php
 
 use App\Controllers\LoginController;
+use App\Controllers\PasswordController;
+use App\Controllers\ProfileController;
 use App\Controllers\RegisterController;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\CsrfMiddleware;
 use App\Middlewares\GuestMiddleware;
-use App\Request;
 
 $router->get('/', function() {
     template('welcome');
@@ -26,9 +27,17 @@ $router->post('/login', [LoginController::class, 'store'])
 $router->get('/logout', [LoginController::class, 'destroy'])
        ->middleware(AuthMiddleware::class);
 
-$router->get('/dashboard', function() {
-    template('dashboard');
-})->middleware(AuthMiddleware::class);
+$router->get('/profile', [ProfileController::class, 'show'])
+       ->middleware(AuthMiddleware::class);
+
+$router->get('/profile/edit', [ProfileController::class, 'edit'])
+       ->middleware(AuthMiddleware::class);
+
+$router->post('/profile/edit', [ProfileController::class, 'update'])
+       ->middleware([AuthMiddleware::class, CsrfMiddleware::class]);
+
+$router->get('/password/change', [PasswordController::class, 'create'])
+       ->middleware([AuthMiddleware::class, CsrfMiddleware::class]);
 
 $router->get('/admin', function() {
     template('admin');

@@ -2,12 +2,10 @@
 
 namespace App\Validation\Rules;
 
-use Rakit\Validation\Rule;
-
 class UniqueRule extends DatabaseRule
 {
     protected $message = ":attribute already exists";
-    protected $fillable_params = ['table', 'column'];
+    protected $fillable_params = ['table', 'column', 'except'];
 
     public function check($value): bool
     {
@@ -15,7 +13,8 @@ class UniqueRule extends DatabaseRule
 
         $table = $this->parameter('table');
         $column = $this->parameter('column');
+        $except = $this->parameter('except');
 
-        return !$this->recordExists($table, $column, $value);
+        return !$this->recordExists($table, $column, $value, $except);
     }
 }

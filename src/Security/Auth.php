@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Repositories\RememberTokenRepository;
+use App\Repositories\UserRepository;
 
 class Auth
 {
@@ -34,5 +35,15 @@ class Auth
         $_SESSION['user_id'] = $data['user_id'];
 
         return true;
+    }
+
+    public static function user(): ?array
+    {
+        return UserRepository::findById($_SESSION['user_id']);
+    }
+
+    public static function userId(): ?int
+    {
+        return $_SESSION['user_id'] ?? null;
     }
 }

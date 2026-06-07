@@ -1,5 +1,5 @@
 <?php
-partial('header', ['styles' => styles(['main', 'error'])]);
+partial('header', ['styles' => styles('error')]);
 partial('navbar');
 ?>
 

@@ -6,10 +6,20 @@ use Rakit\Validation\Rule;
 
 abstract class DatabaseRule extends Rule
 {
-    protected function recordExists($table, $column, $value): bool
+    protected function recordExists(string $table, string $column, string $value, ?string $except = null): bool
     {
-        $stmt = db()->prepare("SELECT 1 FROM $table WHERE $column = :value LIMIT 1");
-        $stmt->execute(['value' => $value]);
+        $sql = "SELECT 1 FROM $table WHERE $column = ?";
+        $params = [$value];
+
+        if ($except !== null) {
+            $sql .= " AND $column != ?";
+            $params[] = $except;
+        }
+
+        $sql .= " LIMIT 1";
+
+        $stmt = db()->prepare($sql);
+        $stmt->execute($params);
 
         return (bool) $stmt->fetch();
     }
