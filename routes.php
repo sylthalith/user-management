@@ -37,6 +37,9 @@ $router->post('/profile/edit', [ProfileController::class, 'update'])
        ->middleware([AuthMiddleware::class, CsrfMiddleware::class]);
 
 $router->get('/password/change', [PasswordController::class, 'create'])
+       ->middleware(AuthMiddleware::class);
+
+$router->post('/password/change', [PasswordController::class, 'store'])
        ->middleware([AuthMiddleware::class, CsrfMiddleware::class]);
 
 $router->get('/admin', function() {

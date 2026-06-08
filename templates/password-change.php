@@ -7,7 +7,7 @@ partial('navbar');
         <form class="form" action="/password/change" method="POST">
             <?= csrfToken() ?>
             <?php
-            partial('input-block', ['name' => 'current_password', 'label' => 'Текущий пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
+            partial('input-block', ['name' => 'current_password', 'label' => 'Текущий пароль', 'type' => 'password', 'errors' => $errors['current_password'] ?? []]);
             partial('input-block', ['name' => 'password', 'label' => 'Новый пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
             partial('input-block', ['name' => 'password_confirmation', 'label' => 'Подтверждение пароля', 'type' => 'password', 'errors' => $errors['password_confirmation'] ?? []]);
             ?>
