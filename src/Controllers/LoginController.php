@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Flash;
 use App\Repositories\RememberTokenRepository;
 use App\Repositories\UserRepository;
 use App\Request;
@@ -57,6 +58,8 @@ class LoginController
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
+
+        Flash::set("Привет, {$user['name']}!");
 
         redirect('/profile');
     }

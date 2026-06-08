@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Flash;
 use App\Repositories\UserRepository;
 use App\Request;
 use App\Security\Auth;
@@ -47,6 +48,8 @@ class PasswordController
         UserRepository::updateById($id, [
             'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
         ]);
+
+        Flash::set('Пароль успешно изменен');
 
         redirect('/profile');
     }

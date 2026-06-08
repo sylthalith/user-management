@@ -1,6 +1,7 @@
 <?php
 
 use App\Database;
+use App\Flash;
 use App\Middlewares\CsrfMiddleware;
 use App\Request;
 use App\Security\Auth;
@@ -88,4 +89,9 @@ function abort($code, $message) {
     }
 
     die();
+}
+
+function getFlashMessage(): ?string
+{
+    return Flash::get();
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Flash;
 use App\Repositories\UserRepository;
 use App\Request;
 use App\Security\Auth;
@@ -45,15 +46,14 @@ class ProfileController
             return;
         }
 
-        $id = Auth::userId();
-
-        UserRepository::updateById($id, [
+        UserRepository::updateById($user['id'], [
             'name' => $_POST['name'],
             'phone' => $_POST['phone'],
             'email' => $_POST['email']
         ]);
 
-        // flash-сообщение
-        template('profile/show', ['user' => Auth::user()]);
+        Flash::set('Данные профиля изменены');
+
+        redirect('/profile');
     }
 }

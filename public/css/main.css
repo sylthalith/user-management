@@ -6,6 +6,7 @@
     --dark-gray: #777;
     --red: #d16b6b;
     --dark-red: #7a2d2d;
+    --green: #356035;
     --border: 1px solid #222;
     --error-border: 1px solid var(--dark-red);
     --window-margin-up: 60px;
@@ -103,6 +104,15 @@ a {
     padding: 4px;
     color: var(--dark-gray);
     border: var(--border);
+}
+
+.flash {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background-color: var(--green);
+    padding: 16px;
+    font-size: clamp(8px, 0.9vw, 16px);
 }
 
 @media (max-width: 650px) {
