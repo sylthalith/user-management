@@ -7,7 +7,7 @@ partial('navbar');
     <form class="form" action="/login" method="POST">
         <?= csrfToken() ?>
         <?php
-        partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($email ?? ''), 'type' => 'email', 'errors' => $errors['email'] ?? []]);
+        partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($old['email'] ?? ''), 'type' => 'email', 'errors' => $errors['email'] ?? []]);
         partial('input-block', ['name' => 'password', 'label' => 'Пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
         ?>
         <div>

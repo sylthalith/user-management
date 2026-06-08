@@ -22,12 +22,15 @@ class RegisterController
 
         if (!$validation) {
             $errors = Request::validationErrors();
+            $old = [
+                'name' => $_POST['name'],
+                'phone' => $_POST['phone'],
+                'email' => $_POST['email'],
+            ];
 
             template('register', [
                 'errors' => $errors,
-                'name' => $_POST['name'],
-                'phone' => $_POST['phone'],
-                'email' => $_POST['email']
+                'old' => $old,
             ]);
 
             return;

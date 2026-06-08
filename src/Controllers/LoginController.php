@@ -20,7 +20,9 @@ class LoginController
 
         if (!$validation) {
             $errors = Request::validationErrors();
-            template('login', ['errors' => $errors, 'email' => $_POST['email']]);
+            $old = ['email' => $_POST['email']];
+
+            template('login', ['errors' => $errors, 'old' => $old]);
             return;
         }
 
@@ -28,7 +30,10 @@ class LoginController
 
         if (!$user || !password_verify($_POST['password'], $user['password'])) {
             $errors = ['password' => 'Неверные данные пользователя'];
-            template('login', ['errors' => $errors, 'email' => $_POST['email']]);
+            $old = ['email' => $_POST['email']];
+
+            template('login', ['errors' => $errors, 'old' => $old]);
+
             return;
         }
 

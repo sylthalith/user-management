@@ -14,7 +14,7 @@ partial('navbar');
         <?php
         partial('input-block', ['name' => 'name', 'label' => 'Имя', 'value' => h($user['name'] ?? $old['name'] ?? ''), 'errors' => $errors['name'] ?? []]);
         partial('input-block', ['name' => 'phone', 'label' => 'Телефон', 'value' => h($user['phone'] ?? $old['phone'] ?? ''), 'errors' => $errors['phone'] ?? []]);
-        partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($user['email'] ?? $old['email'] ?? ''), 'errors' => $errors['email'] ?? []]);
+        partial('input-block', ['name' => 'email', 'type' => 'email', 'label' => 'Почта', 'value' => h($user['email'] ?? $old['email'] ?? ''), 'errors' => $errors['email'] ?? []]);
         ?>
         <button class="btn white-btn" type="submit">Сохранить</button>
     </form>

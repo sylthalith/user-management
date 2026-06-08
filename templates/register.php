@@ -7,9 +7,9 @@ partial('navbar');
     <form class="form" action="/register" method="POST">
         <?= csrfToken() ?>
         <?php
-            partial('input-block', ['name' => 'name', 'label' => 'Имя', 'value' => h($name ?? ''), 'errors' => $errors['name'] ?? []]);
-            partial('input-block', ['name' => 'phone', 'label' => 'Телефон', 'value' => h($phone ?? ''), 'errors' => $errors['phone'] ?? []]);
-            partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($email ?? ''), 'type' => 'email', 'errors' => $errors['email'] ?? []]);
+            partial('input-block', ['name' => 'name', 'label' => 'Имя', 'value' => h($old['name'] ?? ''), 'errors' => $errors['name'] ?? []]);
+            partial('input-block', ['name' => 'phone', 'label' => 'Телефон', 'value' => h($old['phone'] ?? ''), 'errors' => $errors['phone'] ?? []]);
+            partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($old['email'] ?? ''), 'type' => 'email', 'errors' => $errors['email'] ?? []]);
             partial('input-block', ['name' => 'password', 'label' => 'Пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
             partial('input-block', ['name' => 'password_confirmation', 'label' => 'Подтверждение пароля', 'type' => 'password', 'errors' => $errors['password_confirmation'] ?? []]);
         ?>
