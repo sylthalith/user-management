@@ -8,6 +8,8 @@ session_start();
 require '../vendor/autoload.php';
 require '../config/helpers.php';
 
+//dd(user()['avatar']);
+
 $router = new Router();
 
 require '../routes.php';

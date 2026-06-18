@@ -26,7 +26,7 @@
                     Пользователь
                 </div>
                 <a class="avatar" href="/profile">
-                    <img src="" alt="" class="avatar-image">
+                    <img src="<?= avatarSrc(user()['avatar']) ?>" alt="" class="avatar-image">
                 </a>
             <?php endif ?>
         </div>

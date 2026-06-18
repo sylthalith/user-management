@@ -1,3 +1,5 @@
 vendor
 config/db.php
 .idea
+public/avatars/*
+!public/avatars/default.jpg

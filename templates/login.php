@@ -10,7 +10,7 @@ partial('navbar');
         partial('input-block', ['name' => 'email', 'label' => 'Почта', 'value' => h($old['email'] ?? ''), 'type' => 'email', 'errors' => $errors['email'] ?? []]);
         partial('input-block', ['name' => 'password', 'label' => 'Пароль', 'type' => 'password', 'errors' => $errors['password'] ?? []]);
         ?>
-        <div>
+        <div class="remember">
             <input type="checkbox" name="remember_me">
             Запомнить меня
         </div>

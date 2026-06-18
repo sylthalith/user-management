@@ -7,6 +7,7 @@
     "require": {
         "ext-pdo": "*",
         "ext-ctype": "*",
+        "ext-fileinfo": "*",
         "rakit/validation": "^0.19.0"
     }
 }

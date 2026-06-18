@@ -4,3 +4,7 @@
     align-items: center;
     max-width: 500px;
 }
+
+.profile-avatar {
+    margin-bottom: 10px;
+}

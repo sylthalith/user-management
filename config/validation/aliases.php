@@ -5,5 +5,6 @@ return [
     'phone' => 'Номер телефона',
     'email' => 'Почта',
     'password' => 'Пароль',
+    'current_password' => 'Текущий пароль',
     'password_confirmation' => 'Подтверждение пароля',
 ];

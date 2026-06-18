@@ -14,6 +14,7 @@ define('STYLES_URL', '/css');
 define('SCRIPTS_URL', '/js');
 define('CONFIG', ROOT . '/config');
 define('VALIDATION', ROOT . '/src/Validation');
+define('AVATARS', ROOT . '/public/avatars');
 
 function template(string $template, array $data = []) {
     extract($data);
@@ -78,6 +79,10 @@ function isAuth(): bool {
     return Auth::check();
 }
 
+function user(): array {
+    return Auth::user();
+}
+
 function abort($code, $message) {
     http_response_code($code);
 
@@ -94,4 +99,8 @@ function abort($code, $message) {
 function getFlashMessage(): ?string
 {
     return Flash::get();
+}
+
+function avatarSrc(?string $avatar): string {
+    return $avatar ? "/avatars/$avatar" : '/avatars/default.jpg';
 }
