@@ -27,7 +27,7 @@ class LoginController
             return;
         }
 
-        $user = UserRepository::findByEmail($_POST['email']);
+        $user = UserRepository::findOne(['email' => $_POST['email']]);
 
         if (!$user || !password_verify($_POST['password'], $user['password'])) {
             $errors = ['password' => 'Неверные данные пользователя'];
@@ -78,7 +78,7 @@ class LoginController
         if (isset($_COOKIE['remember_token'])) {
             $rememberToken = $_COOKIE['remember_token'];
 
-            RememberTokenRepository::deleteByToken($rememberToken);
+            RememberTokenRepository::delete(['token' => $rememberToken]);
         }
 
         setcookie('remember_token', '', time() - 3600, '/');

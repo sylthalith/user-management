@@ -43,11 +43,12 @@ class PasswordController
             return;
         }
 
-        $id = Auth::userId();
+        $id = Auth::user()['id'];
 
-        UserRepository::updateById($id, [
-            'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-        ]);
+        UserRepository::update(
+            ['id' => $id],
+            ['password' => password_hash($_POST['password'], PASSWORD_DEFAULT)]
+        );
 
         Flash::set('Пароль успешно изменен');
 

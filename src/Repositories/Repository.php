@@ -2,9 +2,29 @@
 
 namespace App\Repositories;
 
+use PDOStatement;
+
 class Repository
 {
     protected static string $table;
+
+    protected static function exec(string $sql, array $params = []): PDOStatement
+    {
+        $stmt = db()->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt;
+    }
+
+    protected static function query(string $sql, array $params = []): array
+    {
+        return self::exec($sql, $params)->fetchAll();
+    }
+
+    protected static function queryOne(string $sql, array $params = []): ?array
+    {
+        return self::exec($sql, $params)->fetch() ?: null;
+    }
 
     public static function create(array $data): int
     {
@@ -13,52 +33,49 @@ class Repository
         $fields = implode(', ', array_keys($data));
         $questionMarks = self::generateQuestionMarks(count($data));
 
-        $stmt = db()->prepare("INSERT INTO $table ($fields) VALUES ($questionMarks)");
-        $stmt->execute(array_values($data));
+        $sql = "INSERT INTO $table ($fields) VALUES ($questionMarks)";
+        $params = array_values($data);
+
+        self::exec($sql, $params);
 
         return (int) db()->lastInsertId();
     }
 
-    protected static function findByFields(array $fields, ?int $limit = null): ?array
+    public static function findOne(array $fields): ?array
     {
         $table = static::$table;
 
         $whereClause = self::buildWhereClause($fields);
-        $limitClause = $limit ? "LIMIT $limit" : "";
 
-        $stmt = db()->prepare("SELECT * FROM $table WHERE $whereClause $limitClause");
-        $stmt->execute(array_values($fields));
+        $sql = "SELECT * FROM $table WHERE $whereClause";
+        $params = array_values($fields);
 
-        if ($limit === 1) {
-            return $stmt->fetch() ?: null;
-        }
-
-        return $stmt->fetchAll() ?: null;
+        return self::queryOne($sql, $params);
     }
 
-    protected static function updateByFields(array $fields, array $data): void
+    public static function update(array $fields, array $data): void
     {
         $table = static::$table;
 
         $setClause = self::buildSetClause($data);
-        $conditionClause = self::buildWhereClause($fields);
+        $whereClause = self::buildWhereClause($fields);
 
-        $stmt = db()->prepare("UPDATE $table SET $setClause WHERE $conditionClause");
-        $stmt->execute([...array_values($data), ...array_values($fields)]);
+        $sql = "UPDATE $table SET $setClause WHERE $whereClause";
+        $params = [...array_values($data), ...array_values($fields)];
+
+        self::exec($sql, $params);
     }
 
-    protected static function deleteByFields(array $fields): void
+    public static function delete(array $fields): void
     {
         $table = static::$table;
-        $conditionClause = self::buildWhereClause($fields);
 
-        $stmt = db()->prepare("DELETE FROM $table WHERE $conditionClause");
-        $stmt->execute(array_values($fields));
-    }
+        $whereClause = self::buildWhereClause($fields);
 
-    private static function buildPairs(array $data): array
-    {
-        return array_map(fn($field) => "$field = ?", array_keys($data));
+        $sql = "DELETE FROM $table WHERE $whereClause";
+        $params = array_values($fields);
+
+        self::exec($sql, $params);
     }
 
     private static function buildSetClause(array $data): string
@@ -73,6 +90,11 @@ class Repository
         $conditions = self::buildPairs($fields);
 
         return implode(' AND ', $conditions);
+    }
+
+    private static function buildPairs(array $data): array
+    {
+        return array_map(fn($field) => "$field = ?", array_keys($data));
     }
 
     private static function generateQuestionMarks(int $count): string

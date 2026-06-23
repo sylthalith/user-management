@@ -84,7 +84,10 @@ class ProfileController
                 return;
             }
 
-            UserRepository::updateById($user['id'], ['avatar' => $fileName]);
+            UserRepository::update(
+                ['id' => $user['id']],
+                ['avatar' => $fileName]
+            );
 
             if ($user['avatar']) {
                 unlink(AVATARS . '/' . $user['avatar']);
@@ -100,7 +103,10 @@ class ProfileController
         ]);
 
         if (!empty($data)) {
-            UserRepository::updateById($user['id'], $data);
+            UserRepository::update(
+                ['id' => $user['id']],
+                $data
+            );
 
             $profileUpdated = true;
         }
