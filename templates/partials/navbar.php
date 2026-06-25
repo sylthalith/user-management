@@ -23,7 +23,7 @@
         <div class="nav-item user">
             <?php if (isAuth()): ?>
                 <div class="role">
-                    Пользователь
+                    <?= isAdmin() ? 'Администратор' : 'Пользователь' ?>
                 </div>
                 <a class="avatar" href="/profile">
                     <img src="<?= avatarSrc(user()['avatar']) ?>" alt="" class="avatar-image">

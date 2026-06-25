@@ -1,0 +1,31 @@
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
+    color: var(--dark-gray);
+    padding-bottom: 16px;
+    border-bottom: var(--border);
+}
+
+td {
+    padding-block: 16px;
+    border-bottom: var(--border);
+}
+
+th, td {
+    padding-inline: 8px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

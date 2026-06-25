@@ -1,0 +1,41 @@
+.container {
+    gap: 32px;
+    margin-block: 32px 0;
+}
+
+.stats-item, .users {
+    padding: 24px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.stats-item-label {
+    color: var(--dark-gray);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.stats-item-value {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.users-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.users-header-all {
+    padding-block: 15px;
+    color: var(--dark-gray);
+}
+
+.users-header-title {
+    font-size: clamp(14px, 1.8vw, 28px);
+}

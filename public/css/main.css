@@ -4,6 +4,8 @@
     --white: #fff;
     --gray: #888;
     --dark-gray: #777;
+    --dark: #222;
+    --white-dark: #333;
     --red: #d16b6b;
     --dark-red: #7a2d2d;
     --green: #356035;
@@ -51,13 +53,21 @@ a {
 }
 
 .dark-btn {
-    border: var(--border);
-    background: var(--accent-color);
+    border: 1px solid var(--white-dark);
+    background: var(--dark);
 }
 
 .window {
     border: var(--border);
     background-color: var(--accent-color);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 10px;
 }
 
 .header {
