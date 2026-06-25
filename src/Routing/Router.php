@@ -2,12 +2,17 @@
 
 namespace App\Routing;
 
-use App\Request;
+use App\Container;
 
 class Router
 {
     private array $routes = [];
     private ?Route $lastRoute = null;
+
+    public function __construct(
+        private Container $container,
+    ) {}
+
     private function addRoute(string $method, string $uri, callable|array $handler): Router
     {
         $route = new Route($method, $uri, $handler);
@@ -63,7 +68,8 @@ class Router
             abort(404, 'Страница не найдена');
         }
 
-        $route->checkMiddlewares();
+        $middlewares = $route->getMiddlewares();
+        $this->checkMiddlewares($middlewares);
 
         $handler = $route->getHandler();
         $parameters = $route->getParameters();
@@ -74,9 +80,9 @@ class Router
 
         [$class, $method] = $handler;
 
-        $controller = new $class();
+        $object = $this->container->get($class);
 
-        return $controller->$method(...$parameters);
+        return $object->$method(...$parameters);
     }
 
     public function middleware(array|string $middlewares) {
@@ -86,6 +92,13 @@ class Router
 
         foreach (wrapArray($middlewares) as $middleware) {
             $this->lastRoute->addMiddleware($middleware);
+        }
+    }
+
+    private function checkMiddlewares(array $middlewares): void
+    {
+        foreach ($middlewares as $middleware) {
+            $this->container->get($middleware)->handle();
         }
     }
 }

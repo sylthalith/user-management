@@ -1,16 +1,18 @@
 <?php
 
-use App\Request;
+use App\Container;
 use App\Routing\Router;
 
 session_start();
 
 require '../vendor/autoload.php';
+
+$container = new Container();
+
+require '../config/container.php';
 require '../config/helpers.php';
 
-//dd(user()['avatar']);
-
-$router = new Router();
+$router = $container->get(Router::class);
 
 require '../routes.php';
 

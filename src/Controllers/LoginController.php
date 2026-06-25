@@ -5,29 +5,36 @@ namespace App\Controllers;
 use App\Flash;
 use App\Repositories\RememberTokenRepository;
 use App\Repositories\UserRepository;
-use App\Request;
+use App\Validation\Validator;
 
 class LoginController
 {
+    public function __construct(
+        private Validator $validator,
+        private UserRepository $users,
+        private RememberTokenRepository $tokens,
+        private Flash $flash,
+    ) {}
+
     public function create() {
         template('login');
     }
 
     public function store() {
-        $validation = Request::validate([
+        $this->validator->validate($_POST, [
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (!$validation) {
-            $errors = Request::validationErrors();
+        if ($this->validator->hasErrors()) {
+            $errors = $this->validator->getErrors();
             $old = ['email' => $_POST['email']];
 
             template('login', ['errors' => $errors, 'old' => $old]);
             return;
         }
 
-        $user = UserRepository::findOne(['email' => $_POST['email']]);
+        $user = $this->users->findOne(['email' => $_POST['email']]);
 
         if (!$user || !password_verify($_POST['password'], $user['password'])) {
             $errors = ['password' => 'Неверные данные пользователя'];
@@ -49,7 +56,7 @@ class LoginController
                 'samesite' => 'Strict'
             ]);
 
-            RememberTokenRepository::create([
+            $this->tokens->create([
                 'user_id' => $user['id'],
                 'token' => $rememberToken,
                 'expires_at' => date("Y-m-d H:i:s", $expiresAt)
@@ -59,7 +66,7 @@ class LoginController
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
 
-        Flash::set("Привет, {$user['name']}!");
+        $this->flash->set("Привет, {$user['name']}!");
 
         redirect('/profile');
     }
@@ -78,7 +85,7 @@ class LoginController
         if (isset($_COOKIE['remember_token'])) {
             $rememberToken = $_COOKIE['remember_token'];
 
-            RememberTokenRepository::delete(['token' => $rememberToken]);
+            $this->tokens->delete(['token' => $rememberToken]);
         }
 
         setcookie('remember_token', '', time() - 3600, '/');

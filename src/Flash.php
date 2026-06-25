@@ -4,16 +4,18 @@ namespace App;
 
 class Flash
 {
-    public static function set(string $message)
+    private string $key = 'flash';
+
+    public function set(string $message)
     {
-        $_SESSION['flash'] = $message;
+        $_SESSION[$this->key] = $message;
     }
 
-    public static function get(): ?string
+    public function get(): ?string
     {
-        $message = $_SESSION['flash'] ?? null;
+        $message = $_SESSION[$this->key] ?? null;
 
-        unset($_SESSION['flash']);
+        unset($_SESSION[$this->key]);
 
         return $message;
     }

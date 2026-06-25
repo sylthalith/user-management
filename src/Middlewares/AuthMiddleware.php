@@ -6,8 +6,12 @@ use App\Security\Auth;
 
 class AuthMiddleware extends Middleware
 {
+    public function __construct(
+        private Auth $auth,
+    ) {}
+
     protected function condition(): bool {
-        return Auth::check();
+        return $this->auth->check();
     }
 
     protected function fail(): void

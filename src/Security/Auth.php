@@ -7,7 +7,12 @@ use App\Repositories\UserRepository;
 
 class Auth
 {
-    public static function check(): bool
+    public function __construct(
+        private RememberTokenRepository $tokens,
+        private UserRepository $users
+    ) {}
+
+    public function check(): bool
     {
         if (isset($_SESSION['user_id'])) {
             return true;
@@ -19,7 +24,7 @@ class Auth
 
         $rememberToken = $_COOKIE['remember_token'];
 
-        $data = RememberTokenRepository::findByToken($rememberToken);
+        $data = $this->tokens->findOne(['token' => $rememberToken]);
 
         if (!$data) {
             return false;
@@ -37,13 +42,14 @@ class Auth
         return true;
     }
 
-    public static function user(): ?array
+    public function user(): ?array
     {
-        return UserRepository::findById($_SESSION['user_id']);
+        return $this->check() ? $this->users->findOne(['id' => $_SESSION['user_id']])
+                              : null;
     }
 
-    public static function userId(): ?int
+    public function isAdmin(): bool
     {
-        return $_SESSION['user_id'] ?? null;
+        return $this->user()['is_admin'] ?? false;
     }
 }

@@ -4,5 +4,5 @@ namespace App\Repositories;
 
 class RememberTokenRepository extends Repository
 {
-    protected static string $table = 'remember_tokens';
+    protected string $table = 'remember_tokens';
 }

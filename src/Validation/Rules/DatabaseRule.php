@@ -2,10 +2,15 @@
 
 namespace App\Validation\Rules;
 
+use PDO;
 use Rakit\Validation\Rule;
 
 abstract class DatabaseRule extends Rule
 {
+    public function __construct(
+        protected PDO $pdo
+    ) {}
+
     protected function recordExists(string $table, string $column, string $value, ?string $except = null): bool
     {
         $sql = "SELECT 1 FROM $table WHERE $column = ?";
@@ -18,7 +23,7 @@ abstract class DatabaseRule extends Rule
 
         $sql .= " LIMIT 1";
 
-        $stmt = db()->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
         return (bool) $stmt->fetch();

@@ -1,11 +1,9 @@
 <?php
 
-use App\Database;
+use App\Container;
 use App\Flash;
-use App\Middlewares\CsrfMiddleware;
 use App\Request;
 use App\Security\Auth;
-use Rakit\Validation\Validator;
 use App\Security\CsrfToken;
 
 define('ROOT', dirname(__DIR__));
@@ -15,6 +13,13 @@ define('SCRIPTS_URL', '/js');
 define('CONFIG', ROOT . '/config');
 define('VALIDATION', ROOT . '/src/Validation');
 define('AVATARS', ROOT . '/public/avatars');
+
+function container(): Container
+{
+    global $container;
+
+    return $container;
+}
 
 function template(string $template, array $data = []) {
     extract($data);
@@ -28,9 +33,11 @@ function partial(string $partial, array $data = []) {
 
 function getFilesPaths(array|string $files, string $folderPath, string $extension) {
     $paths = [];
+
     foreach (wrapArray($files) as $file) {
         $paths[] = $folderPath . "/$file.$extension";
     }
+
     return $paths;
 }
 
@@ -46,12 +53,9 @@ function config(string $conf) {
     return CONFIG . "/$conf.php";
 }
 
-function db() {
-    return Database::get();
-}
-
 function redirect($path) {
     header("Location: $path");
+
     exit();
 }
 
@@ -63,7 +67,8 @@ function dd($value) {
 }
 
 function csrfToken(): string {
-    $token = (new CsrfToken())->get();
+    $token = container()->get(CsrfToken::class)->get();
+
     return "<input type='hidden' name='csrf_token' value='$token'>";
 }
 
@@ -75,18 +80,27 @@ function h(string $str): string {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
-function isAuth(): bool {
-    return Auth::check();
+function isAuth(): bool
+{
+    return container()->get(Auth::class)->check();
 }
 
-function user(): array {
-    return Auth::user();
+function user(): ?array
+{
+    return container()->get(Auth::class)->user();
+}
+
+function isAdmin(): bool
+{
+    return container()->get(Auth::class)->isAdmin();
 }
 
 function abort($code, $message) {
     http_response_code($code);
 
-    if (Request::isAjax()) {
+    $request = container()->get(Request::class);
+
+    if ($request->isAjax()) {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['error' => $message]);
     } else {
@@ -98,7 +112,9 @@ function abort($code, $message) {
 
 function getFlashMessage(): ?string
 {
-    return Flash::get();
+    $flash = container()->get(Flash::class);
+
+    return $flash->get();
 }
 
 function avatarSrc(?string $avatar): string {

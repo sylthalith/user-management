@@ -3,16 +3,21 @@
 namespace App\Controllers;
 
 use App\Repositories\UserRepository;
-use App\Request;
+use App\Validation\Validator;
 
 class RegisterController
 {
+    public function __construct(
+        private Validator $validator,
+        private UserRepository $users,
+    ) {}
+
     public function create() {
         template('register');
     }
 
     public function store() {
-        $validation = Request::validate([
+        $this->validator->validate($_POST, [
             'name' => 'required|min:5|max:50|unique:users,name',
             'phone' => 'required|phone|unique:users,phone',
             'email' => 'required|email|unique:users,email',
@@ -20,8 +25,9 @@ class RegisterController
             'password_confirmation' => 'required|same:password'
         ]);
 
-        if (!$validation) {
-            $errors = Request::validationErrors();
+        if ($this->validator->hasErrors()) {
+            $errors = $this->validator->getErrors();
+
             $old = [
                 'name' => $_POST['name'],
                 'phone' => $_POST['phone'],
@@ -38,7 +44,7 @@ class RegisterController
 
         $phone = preg_replace('/[^0-9]/', '', $_POST['phone']);
 
-        $userId = UserRepository::create([
+        $userId = $this->users->create([
             'name' => $_POST['name'],
             'phone' => $phone,
             'email' => $_POST['email'],

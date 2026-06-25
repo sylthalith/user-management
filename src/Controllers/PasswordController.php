@@ -4,11 +4,18 @@ namespace App\Controllers;
 
 use App\Flash;
 use App\Repositories\UserRepository;
-use App\Request;
 use App\Security\Auth;
+use App\Validation\Validator;
 
 class PasswordController
 {
+    public function __construct(
+        private Validator $validator,
+        private Auth $auth,
+        private UserRepository $users,
+        private Flash $flash,
+    ) {}
+
     public function create()
     {
         template('password-change');
@@ -16,22 +23,24 @@ class PasswordController
 
     public function store()
     {
-        $validation = Request::validate([
+        $this->validator->validate($_POST, [
             'current_password' => 'required',
             'password' => 'required|min:8|max:255',
             'password_confirmation' => 'required|same:password',
         ]);
 
-        if (!$validation) {
-            $errors = Request::validationErrors();
+        if ($this->validator->hasErrors()) {
+            $errors = $this->validator->getErrors();
 
             template('password-change', ['errors' => $errors]);
 
             return;
         }
 
+        $user = $this->auth->user();
+
         $currentPassword = $_POST['current_password'];
-        $userPassword = Auth::user()['password'];
+        $userPassword = $user['password'];
 
         if (!password_verify($currentPassword, $userPassword)) {
             $errors = [
@@ -43,14 +52,12 @@ class PasswordController
             return;
         }
 
-        $id = Auth::user()['id'];
-
-        UserRepository::update(
-            ['id' => $id],
+        $this->users->update(
+            ['id' => $user['id']],
             ['password' => password_hash($_POST['password'], PASSWORD_DEFAULT)]
         );
 
-        Flash::set('Пароль успешно изменен');
+        $this->flash->set('Пароль успешно изменен');
 
         redirect('/profile');
     }

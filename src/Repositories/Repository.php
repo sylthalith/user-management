@@ -2,102 +2,124 @@
 
 namespace App\Repositories;
 
+use PDO;
 use PDOStatement;
 
-class Repository
+abstract class Repository
 {
-    protected static string $table;
+    protected string $table;
 
-    protected static function exec(string $sql, array $params = []): PDOStatement
+    public function __construct(
+        protected PDO $pdo
+    ) {}
+
+    protected function exec(string $sql, array $params = []): PDOStatement
     {
-        $stmt = db()->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
         return $stmt;
     }
 
-    protected static function query(string $sql, array $params = []): array
+    protected function query(string $sql, array $params = []): array
     {
-        return self::exec($sql, $params)->fetchAll();
+        return $this->exec($sql, $params)->fetchAll();
     }
 
-    protected static function queryOne(string $sql, array $params = []): ?array
+    protected function queryOne(string $sql, array $params = []): ?array
     {
-        return self::exec($sql, $params)->fetch() ?: null;
+        return $this->exec($sql, $params)->fetch() ?: null;
     }
 
-    public static function create(array $data): int
+    public function create(array $data): int
     {
-        $table = static::$table;
+        $table = $this->table;
 
         $fields = implode(', ', array_keys($data));
-        $questionMarks = self::generateQuestionMarks(count($data));
+        $questionMarks = $this->generateQuestionMarks(count($data));
 
         $sql = "INSERT INTO $table ($fields) VALUES ($questionMarks)";
         $params = array_values($data);
 
-        self::exec($sql, $params);
+        $this->exec($sql, $params);
 
-        return (int) db()->lastInsertId();
+        return (int) $this->pdo->lastInsertId();
     }
 
-    public static function findOne(array $fields): ?array
+    private function select(array $fields): array
     {
-        $table = static::$table;
+        $table = $this->table;
 
-        $whereClause = self::buildWhereClause($fields);
+        $whereClause = $this->buildWhereClause($fields);
 
         $sql = "SELECT * FROM $table WHERE $whereClause";
         $params = array_values($fields);
 
-        return self::queryOne($sql, $params);
+        return [$sql, $params];
     }
 
-    public static function update(array $fields, array $data): void
+    public function find(array $fields): array
     {
-        $table = static::$table;
+        return $this->query(...$this->select($fields));
+    }
 
-        $setClause = self::buildSetClause($data);
-        $whereClause = self::buildWhereClause($fields);
+    public function findOne(array $fields): ?array
+    {
+        return $this->queryOne(...$this->select($fields));
+    }
+
+    public function update(array $fields, array $data): void
+    {
+        $table = $this->table;
+
+        $setClause = $this->buildSetClause($data);
+        $whereClause = $this->buildWhereClause($fields);
 
         $sql = "UPDATE $table SET $setClause WHERE $whereClause";
         $params = [...array_values($data), ...array_values($fields)];
 
-        self::exec($sql, $params);
+        $this->exec($sql, $params);
     }
 
-    public static function delete(array $fields): void
+    public function delete(array $fields): void
     {
-        $table = static::$table;
+        $table = $this->table;
 
-        $whereClause = self::buildWhereClause($fields);
+        $whereClause = $this->buildWhereClause($fields);
 
         $sql = "DELETE FROM $table WHERE $whereClause";
         $params = array_values($fields);
 
-        self::exec($sql, $params);
+        $this->exec($sql, $params);
     }
 
-    private static function buildSetClause(array $data): string
+    public function count(): int
     {
-        $sets = self::buildPairs($data);
+        $table = $this->table;
+
+        return (int) $this->exec("SELECT COUNT(*) FROM $table")->fetchColumn();
+    }
+
+    private function buildSetClause(array $data): string
+    {
+        $sets = $this->buildPairs($data);
 
         return implode(', ', $sets);
     }
 
-    private static function buildWhereClause(array $fields): string
+    private function buildWhereClause(array $fields): string
     {
-        $conditions = self::buildPairs($fields);
+        $conditions = $this->buildPairs($fields);
 
         return implode(' AND ', $conditions);
     }
 
-    private static function buildPairs(array $data): array
+    private function buildPairs(array $data): array
     {
         return array_map(fn($field) => "$field = ?", array_keys($data));
     }
 
-    private static function generateQuestionMarks(int $count): string
+    private function generateQuestionMarks(int $count): string
     {
         return implode(', ', array_fill(0, $count, '?'));
     }

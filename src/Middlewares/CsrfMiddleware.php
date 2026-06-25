@@ -6,16 +6,13 @@ use App\Security\CsrfToken;
 
 class CsrfMiddleware extends Middleware
 {
-    private CsrfToken $csrfToken;
-
-    public function __construct()
-    {
-        $this->csrfToken = new CsrfToken();
-    }
+    public function __construct(
+        private CsrfToken $csrf,
+    ) {}
 
     protected function condition(): bool
     {
-        return $this->csrfToken->verify();
+        return $this->csrf->verify();
     }
 
     protected function fail(): void

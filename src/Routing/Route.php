@@ -2,8 +2,6 @@
 
 namespace App\Routing;
 
-use App\Security\CsrfToken;
-
 class Route
 {
     private string $method;
@@ -12,7 +10,7 @@ class Route
     private array $middlewares = [];
     private array $parameters = [];
     private static array $defaultPatterns = [
-        'id'   => '[0-9]+',
+        'id' => '[0-9]+',
         'slug' => '[a-z0-9]+(?:-[a-z0-9]+)*',
         'default' => '[a-z0-9]+',
     ];
@@ -121,11 +119,8 @@ class Route
         $this->middlewares[] = $middleware;
     }
 
-    public function checkMiddlewares()
+    public function getMiddlewares(): array
     {
-        foreach ($this->middlewares as $middlewareClass) {
-            $middleware = new $middlewareClass();
-            $middleware->handle();
-        }
+        return $this->middlewares;
     }
 }

@@ -4,26 +4,33 @@ namespace App\Controllers;
 
 use App\Flash;
 use App\Repositories\UserRepository;
-use App\Request;
 use App\Security\Auth;
+use App\Validation\Validator;
 
 class ProfileController
 {
+    public function __construct(
+        private Auth $auth,
+        private Validator $validator,
+        private Flash $flash,
+        private UserRepository $users,
+    ) {}
+
     public function show()
     {
-        template('profile/show', ['old' => Auth::user()]);
+        template('profile/show', ['old' => $this->auth->user()]);
     }
 
     public function edit()
     {
-        template('profile/edit', ['old' => Auth::user()]);
+        template('profile/edit', ['old' => $this->auth->user()]);
     }
 
     public function update()
     {
-        $user = Auth::user();
+        $user = $this->auth->user();
 
-        $validation = Request::validate(rules: [
+        $this->validator->validate($_POST, [
             'name' => "required|min:5|max:50|unique:users,name,{$user['name']}",
             'phone' => "required|phone|unique:users,phone,{$user['phone']}",
             'email' => "required|email|unique:users,email,{$user['email']}",
@@ -49,8 +56,8 @@ class ProfileController
             }
         }
 
-        if (!$validation || isset($avatarErrorMessage)) {
-            $errors = Request::validationErrors();
+        if ($this->validator->hasErrors() || isset($avatarErrorMessage)) {
+            $errors = $this->validator->getErrors();
 
             $old = [
                 'name' => $_POST['name'],
@@ -59,7 +66,7 @@ class ProfileController
             ];
 
             if (isset($avatarErrorMessage)) {
-                Flash::set($avatarErrorMessage);
+                $this->flash->set($avatarErrorMessage);
             }
 
             template('profile/edit', [
@@ -77,14 +84,14 @@ class ProfileController
             $filePath = AVATARS . "/$fileName";
 
             if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $filePath)) {
-                Flash::set('Не удалось сохранить аватар');
+                $this->flash->set('Не удалось сохранить аватар');
 
                 redirect('/profile');
 
                 return;
             }
 
-            UserRepository::update(
+            $this->users->update(
                 ['id' => $user['id']],
                 ['avatar' => $fileName]
             );
@@ -103,7 +110,7 @@ class ProfileController
         ]);
 
         if (!empty($data)) {
-            UserRepository::update(
+            $this->users->update(
                 ['id' => $user['id']],
                 $data
             );
@@ -112,7 +119,7 @@ class ProfileController
         }
 
         if ($profileUpdated) {
-            Flash::set('Данные профиля изменены');
+            $this->flash->set('Данные профиля изменены');
         }
 
         redirect('/profile');
