@@ -2,10 +2,10 @@
 
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\UserController;
-use App\Controllers\LoginController;
-use App\Controllers\PasswordController;
-use App\Controllers\ProfileController;
-use App\Controllers\RegisterController;
+use App\Controllers\Auth\LoginController;
+use App\Controllers\Auth\RegisterController;
+use App\Controllers\Profile\PasswordController;
+use App\Controllers\Profile\ProfileController;
 use App\Middlewares\AdminMiddleware;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\CsrfMiddleware;
@@ -50,3 +50,8 @@ $router->post('/password/change', [PasswordController::class, 'store'])
 
 $router->get('/admin/dashboard', [DashboardController::class, 'index'])
        ->middleware(AdminMiddleware::class);
+
+$router->get('/admin/users', [UserController::class, 'index'])
+       ->middleware(AdminMiddleware::class);
+
+$router->get('/admin/users/{id}', [UserController::class, 'show']);

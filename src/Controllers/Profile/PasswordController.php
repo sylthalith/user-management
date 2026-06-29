@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Profile;
 
 use App\Flash;
 use App\Repositories\UserRepository;

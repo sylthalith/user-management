@@ -1,0 +1,68 @@
+.container {
+    gap: 16px;
+    margin-block: 32px 0;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+input, select {
+    background-color: var(--accent-color);
+    border: var(--border);
+    color: inherit;
+    padding: 12px;
+}
+
+input {
+    flex: 1;
+}
+
+.table-wrapper {
+    padding: 18px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.white-btn {
+    padding-inline: 20px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-block: 30px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.current {
+    background-color: var(--white);
+    color: var(--background-color);
+}
+
+@media (max-width: 600px) {
+    .pagination-btn {
+        padding: 8px;
+        font-size: 2.5vw;
+    }
+
+    .dots {
+        font-size: 2vw;
+    }
+}
+
+@media (max-width: 400px) {
+    .pagination {
+        gap: 5px;
+    }
+}

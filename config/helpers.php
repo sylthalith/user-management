@@ -120,3 +120,8 @@ function getFlashMessage(): ?string
 function avatarSrc(?string $avatar): string {
     return $avatar ? "/avatars/$avatar" : '/avatars/default.jpg';
 }
+
+function request(): Request
+{
+    return container()->get(Request::class);
+}

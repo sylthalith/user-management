@@ -100,6 +100,13 @@ abstract class Repository
         return (int) $this->exec("SELECT COUNT(*) FROM $table")->fetchColumn();
     }
 
+    public function getPaginated(int $limit, int $offset): array
+    {
+        $table = $this->table;
+
+        return $this->query("SELECT * FROM $table LIMIT ? OFFSET ?", [$limit, $offset]);
+    }
+
     private function buildSetClause(array $data): string
     {
         $sets = $this->buildPairs($data);
