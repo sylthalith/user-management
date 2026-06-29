@@ -12,6 +12,11 @@ class Database
 
         $charset = $db['charset'] ?? 'utf8mb4';
 
-        return new PDO("mysql:host={$db['host']};dbname={$db['database']};charset=$charset", $db['user'], $db['password']);
+        $pdo = new PDO("mysql:host={$db['host']};dbname={$db['database']};charset=$charset", $db['user'], $db['password']);
+
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        return $pdo;
     }
 }

@@ -1,6 +1,5 @@
 <?php
 partial('header', ['styles' => styles('error')]);
-partial('navbar');
 ?>
 
 <div class="content">
